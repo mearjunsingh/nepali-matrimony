@@ -20,7 +20,7 @@
 }
 
 /* Forms */
-.input-group > .form-select {
+.input-group > .form-select, .input-group-text {
 	width: 30%;
 }
 

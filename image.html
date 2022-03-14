@@ -20,11 +20,14 @@
     <div class="row m-3">
         <div class="col-sm-12 col-md-6 col-lg-4 border rounded-3 shadow mx-auto">
 
-            <!-- Header Starts -->
-            <div class="d-flex justify-content-center mt-3">
-                <h1 class="h2 text-danger">Nepali Matrimony</h1>
-            </div>
-            <!-- Header Ends -->
+            <!-- Navbar Starts -->
+            <nav class="d-flex justify-content-center mt-3">
+                <a href="#" class="mx-4 p-2 btn btn-outline-danger rounded-circle"><i data-feather="heart"></i></a>
+                <a href="#" class="mx-4 p-2 btn btn-outline-danger rounded-circle"><i data-feather="send"></i></a>
+                <a href="#" class="mx-4 p-2 btn btn-outline-danger rounded-circle active"><i
+                        data-feather="user"></i></a>
+            </nav>
+            <!-- Navbar Ends -->
 
             <!-- Main Content Starts -->
             <div class="m-3">
@@ -35,32 +38,33 @@
 
                 <!-- Form Starts -->
                 <form action="#" method="get">
-                    <div class="mb-2 input-group d-flex justify-content-center">
-                        <input type="text" class="text-center form-control" id="otp" name="otp" placeholder="OTP"
-                            style="max-width:50%;">
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Upload Profile Photo</label>
+                        <input class="form-control" type="file" id="image">
                     </div>
-                    <div class="my-3 d-flex justify-content-center">
-                        <button class="btn btn-danger" type="submit">Verify</button>
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-danger" type="submit">Create Account</button>
                     </div>
                 </form>
                 <!-- Form Ends -->
 
                 <hr />
 
-                <!-- Rule Starts -->
+                <!-- Image Rule Starts -->
                 <div class="lead">
-                    <span class="fw-bold">Rules:</span>
+                    <span class="fw-bold">Image must be:</span>
                     <ul>
-                        <li>Be gentle</li>
-                        <li>Don't Spam</li>
-                        <li>Don't Misuse</li>
+                        <li>Focused on Face</li>
+                        <li>Clear Quality</li>
+                        <li>Your Own</li>
                     </ul>
                     <hr />
                     <div class="d-flex justify-content-center">
                         Happy Matching!
                     </div>
                 </div>
-                <!-- Rule Ends -->
+                <!-- Image Rule Ends -->
+
 
             </div>
             <!-- Main Content Ends -->
