@@ -69,7 +69,8 @@ class CustomUserAdmin(UserAdmin):
                 'gender',
                 'show',
                 'profile_photo',
-                'bio'
+                'bio',
+                'hobbies'
             )
         }),
         ('User Meta', {

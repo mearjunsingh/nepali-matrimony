@@ -1,3 +1,4 @@
+import datetime
 import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -68,7 +69,11 @@ class User(PermissionsMixin, AbstractBaseUser):
     profile_photo = models.ImageField(_('Profile Photo'), upload_to=UPLOAD_IMAGE_PATH)
     bio = models.TextField(_('Bio'), blank=True, null=True)
     hobbies = models.CharField(_('Hobbies'), max_length=254, choices=HOBBIES, blank=True, null=True)
-
+    district = models.CharField(_('District'), max_length=254)
+    local_level = models.CharField(_('Local Level'), max_length=254)
+    meta_data = models.TextField(_('Meta Data'), blank=True, null=True)
+    hobbies = models.CharField(_('Hobbies'), max_length=254, choices=HOBBIES, blank=True, null=True)
+    
     # user meta
     is_active = models.BooleanField(_('Active'), default=True)
     is_staff = models.BooleanField(_('Staff'), default=False)
@@ -85,9 +90,17 @@ class User(PermissionsMixin, AbstractBaseUser):
     # phone field as login credental
     USERNAME_FIELD = 'phone_number'
 
+    # must have fields for a user
+    REQUIRED_FIELDS = ['full_name', 'date_of_birth', 'gender', 'show', 'profile_photo']
+
     # Display model instance as a readable string
     def __str__(self):
         return f'{self.full_name} - {self.phone_number}'
+
+    # calculate age and use it as a property
+    @property
+    def age(self):
+        return int((datetime.date.today() - self.date_of_birth).days / 365.25)
     
     # add ID once
     def save(self, *args, **kwargs):

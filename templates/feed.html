@@ -1,77 +1,87 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
+{% load static %}
 
-<head>
-    <!-- Meta Tags -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nepali Matrimony</title>
+{% block content %}
 
-    <!-- Boostrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+{% include 'includes/navbar.html' %}
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/main.css" />
-</head>
+<!-- Main Content Starts -->
+<div class="m-3">
 
-<body>
-
-    <!-- Container Starts -->
-    <div class="row m-3">
-        <div class="col-sm-12 col-md-6 col-lg-4 border rounded-3 shadow mx-auto">
-
-            <!-- Navbar Starts -->
-            <nav class="d-flex justify-content-center mt-3">
-                <a href="#" class="mx-4 p-2 btn btn-outline-danger rounded-circle active"><i
-                        data-feather="heart"></i></a>
-                <a href="#" class="mx-4 p-2 btn btn-outline-danger rounded-circle"><i data-feather="send"></i></a>
-                <a href="#" class="mx-4 p-2 btn btn-outline-danger rounded-circle"><i data-feather="user"></i></a>
-            </nav>
-            <!-- Navbar Ends -->
-
-            <!-- Main Content Starts -->
-            <div class="m-3">
-
-                <!-- Image Section Starts -->
-                <div class="image-container">
-                    <img class="rounded border img-fluid" src="img/girl.jpeg" alt="Girl">
-                    <div class="image-content text-light">
-                        <div class="m-2">
-                            <span class="h2">Utsav Koirala</span>
-                            <span class="lead">21</span>
-                        </div>
-                        <div class="bio m-2">
-                            I'm a biut
-                        </div>
-                    </div>
-                </div>
-                <!-- Image Section Ends -->
-
-                <!-- Action Starts -->
-                <div class="d-flex justify-content-center mt-3">
-                    <a href="#" class="mx-4 p-3 btn btn-outline-danger rounded-circle"><i class="icon-45"
-                            data-feather="x"></i></a>
-                    <a href="#" class="mx-4 p-3 btn btn-outline-success rounded-circle"><i class="icon-45"
-                            data-feather="heart"></i></a>
-                </div>
-                <!-- Action Ends -->
-
+    <!-- Image Section Starts -->
+    <div class="image-container">
+        <img id="image_place" class="rounded border img-fluid" src="{{ user.profile_photo.url }}">
+        <div class="image-content text-light">
+            <div class="m-2">
+                <span id="full_name_place" class="h2">{{ user.full_name }}</span>
+                <span id="age_place" class="lead">{{ user.age }}</span>
             </div>
-            <!-- Main Content Ends -->
-
+            <div id="bio_place" class="bio m-2">
+                {{ user.bio }}
+            </div>
         </div>
     </div>
-    <!-- Container Ends -->
+    <!-- Image Section Ends -->
 
-    <!-- Boostrap Bundle JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Action Starts -->
+    <div class="d-flex justify-content-center mt-3">
+        <button id="leftBtn" class="mx-4 p-3 btn btn-outline-danger rounded-circle"><i class="icon-45"
+                data-feather="x"></i></button>
+        <button id="rightBtn" class="mx-4 p-3 btn btn-outline-success rounded-circle"><i class="icon-45"
+                data-feather="heart"></i></button>
+    </div>
+    <!-- Action Ends -->
 
-    <!-- Feathericons JS -->
-    <script src="https://unpkg.com/feather-icons@4.28.0/dist/feather.min.js"></script>
+</div>
+<!-- Main Content Ends -->
 
-    <!-- Custom JS -->
-    <script src="js/app.js"></script>
+{% endblock %}
 
-</body>
 
-</html>
+{% block scripts %}
+
+<script src="{% static 'js/axios.min.js' %}"></script>
+<script>
+    const rightBtn = document.querySelector('#rightBtn');
+    const leftBtn = document.querySelector('#leftBtn');
+
+    const fillUser = response => {
+        new_user_name = response.data['full_name'];
+        new_user_age = response.data['age'];
+        new_user_image_url = response.data['image_url'];
+        new_user_bio = response.data['bio'];
+
+        document.querySelector('#image_place').setAttribute('src', new_user_image_url);
+        document.querySelector('#full_name_place').innerText = new_user_name;
+        document.querySelector('#age_place').innerText = new_user_age;
+        document.querySelector('#bio_place').innerText = new_user_bio;
+    };
+
+    const reqData = new FormData();
+    reqData.append('guestUser', '{{ user.id }}');
+    reqData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+    rightBtn.addEventListener('click', event => {
+        axios.post('http://127.0.0.1:8000/ajax/likeuser/', reqData)
+            .then(response => {
+                fillUser(response);
+                reqData.set('guestUser', response.data['id']);
+            })
+            .catch(error => {
+                alert('Something Happened!');
+            });
+    });
+
+    leftBtn.addEventListener('click', event => {
+        axios.post('http://127.0.0.1:8000/ajax/dislikeuser/', reqData)
+            .then(response => {
+                fillUser(response);
+                reqData.set('guestUser', response.data['id']);
+            })
+            .catch(error => {
+                alert('Something Happened!');
+            });
+    });
+</script>
+
+{% endblock %}
