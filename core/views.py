@@ -16,17 +16,20 @@ def feed_page_view(request):
 
 @login_required
 def ajax_like_user(request):
-    prev_user_id = request.POST.get('guestUser')
-    prev_user = User.objects.get(id=prev_user_id)
-    curr_user = request.user
-    if prev_user.id != curr_user.id:
-        if Like.objects.filter(by=curr_user, to=prev_user).exists():
-            return JsonResponse({'is_match': True})
-        else:
-            Like.objects.create(by=curr_user, to=prev_user)
+    # prev_user_id = request.POST.get('guestUser')
+    # prev_user = User.objects.get(id=prev_user_id)
+    # curr_user = request.user
+    # if prev_user.id != curr_user.id:
+    #     if Like.objects.filter(by=curr_user, to=prev_user).exists():
+    #         return JsonResponse({'is_match': True})
+    #     else:
+    #         Like.objects.create(by=curr_user, to=prev_user)
     
     #todo
-    new_user = User.objects.get(phone_number='admin')
+    import random
+
+    user = User.objects.all()
+    new_user = random.choice(user)
     data = {
         'full_name': new_user.full_name,
         'age': new_user.age,
@@ -39,8 +42,11 @@ def ajax_like_user(request):
 
 @login_required
 def ajax_dislike_user(request):
-    prev_user_id = request.POST.get('guestUser')
-    new_user = User.objects.get(phone_number='admin')
+    # prev_user_id = request.POST.get('guestUser')
+    
+    import random
+    user = User.objects.all()
+    new_user = random.choice(user)
     data = {
         'full_name': new_user.full_name,
         'age': new_user.age,
