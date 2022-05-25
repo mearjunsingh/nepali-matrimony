@@ -1,96 +1,35 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
+{% load static %}
 
-<head>
-    <!-- Meta Tags -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nepali Matrimony</title>
+{% block content %}
 
-    <!-- Boostrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+<!-- Main Content Starts -->
+<div class="m-3">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/main.css" />
-</head>
-
-<body>
-
-    <!-- Container Starts -->
-    <div class="row m-3">
-        <div class="col-sm-12 col-md-6 col-lg-4 border rounded-3 shadow mx-auto">
-
-            <!-- Navbar Starts -->
-            <nav class="d-flex justify-content-center mt-3">
-                <a href="#" class="mx-4 p-2 btn btn-outline-danger rounded-circle"><i data-feather="heart"></i></a>
-                <a href="#" class="mx-4 p-2 btn btn-outline-danger rounded-circle"><i data-feather="send"></i></a>
-                <a href="#" class="mx-4 p-2 btn btn-outline-danger rounded-circle active"><i
-                        data-feather="user"></i></a>
-            </nav>
-            <!-- Navbar Ends -->
-
-            <!-- Main Content Starts -->
-            <div class="m-3">
-
-                <div class="text-danger m-5 d-flex justify-content-center">
-                    <i class="icon-80" data-feather="users"></i>
-                </div>
-
-                <!-- Form Starts -->
-                <form action="#" method="get">
-                    <div class="mb-3">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Full Name">
-                    </div>
-                    <div class="mb-3">
-                        <input type="date" class="form-control" id="dob" name="dob" placeholder="Date of Birth">
-                    </div>
-                    <div class="mb-3">
-                        <select class="form-select">
-                            <option disabled selected>Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <span>Show:</span>
-                        <input type="checkbox" class="btn-check" id="male">
-                        <label class="btn btn-sm rounded-pill btn-outline-danger" for="male">Male</label>
-                        <input type="checkbox" class="btn-check" id="female">
-                        <label class="btn btn-sm rounded-pill btn-outline-danger" for="female">Female</label>
-                        <input type="checkbox" class="btn-check" id="gay">
-                        <label class="btn btn-sm rounded-pill btn-outline-danger" for="gay">Gay</label>
-                        <input type="checkbox" class="btn-check" id="lesbian">
-                        <label class="btn btn-sm rounded-pill btn-outline-danger" for="lesbian">Lesbian</label>
-                        <input type="checkbox" class="btn-check" id="bi">
-                        <label class="btn btn-sm rounded-pill btn-outline-danger" for="bi">Bi-Sexual</label>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button class="btn btn-danger" type="submit">Next</button>
-                    </div>
-                </form>
-                <!-- Form Ends -->
-
-                <hr />
-
-                <span>Follow community guidelines.</span>
-
-            </div>
-            <!-- Main Content Ends -->
-
-        </div>
+    <div class="text-danger m-5 d-flex justify-content-center">
+        <i class="icon-80" data-feather="users"></i>
     </div>
-    <!-- Container Ends -->
 
-    <!-- Boostrap Bundle JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Form Starts -->
+    <form action="{% url 'register_user_profile' %}" method="POST" enctype="multipart/form-data">
 
-    <!-- Feathericons JS -->
-    <script src="https://unpkg.com/feather-icons@4.28.0/dist/feather.min.js"></script>
+        {% include 'includes/forms.html' %}
 
-    <!-- Custom JS -->
-    <script src="js/app.js"></script>
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-danger" type="submit">Register</button>
+        </div>
 
-</body>
+    </form>
+    <!-- Form Ends -->
 
-</html>
+    <hr />
+
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'login_user_profile' %}" class="mx-2 btn btn-sm btn-warning">Already have an
+            account? Login</a>
+    </div>
+
+</div>
+<!-- Main Content Ends -->
+
+{% endblock %}

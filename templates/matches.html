@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% include 'includes/navbar.html' %}
+
+<!-- Main Content Starts -->
+<div class="m-3">
+
+    <ol class="list-group list-group-numbered">
+        {% for match in matches %}
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+
+            {% if match.by == request.user %}
+            {% include 'includes/matches-list.html' with u=match.to %}
+            {% else %}
+            {% include 'includes/matches-list.html' with u=match.by %}
+            {% endif %}
+
+        </li>
+        {% endfor %}
+    </ol>
+
+</div>
+<!-- Main Content Ends -->
+
+{% endblock %}

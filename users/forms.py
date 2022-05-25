@@ -1,36 +1,65 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    UserChangeForm,
+    UserCreationForm,
+)
 
+from .models import Hobby
 
 User = get_user_model()
 
 
+class RegisterForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "form-control"
+
+    password1: forms.Field = forms.CharField(
+        label="Password", widget=forms.PasswordInput()
+    )
+    password2: forms.Field = forms.CharField(
+        label="Password Confirmation", widget=forms.PasswordInput()
+    )
+    date_of_birth = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
+
+    class Meta:
+        model = User
+        fields = (
+            "phone_number",
+            "full_name",
+            "date_of_birth",
+            "profile_photo",
+            "gender",
+            "show",
+            "password1",
+            "password2",
+        )
+
+
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(label='Phone Number', widget=forms.TextInput(
-        attrs={
-            'class': 'form-control',
-            'id' : 'id_phone_number',
-            'placeholder': '98*********',
-            'autofocus' : 'true'
-            }
-        ))
-    password = forms.CharField(widget=forms.PasswordInput(
-        attrs={
-            'class': 'form-control',
-            'placeholder': '********'
-            }
-        ))
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "form-control"
 
 
 class UserChangeForm(UserChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "form-control"
+
     password = None
-    
+
+    profile_photo = forms.ImageField(widget=forms.FileInput(), required=False)
+    bio = forms.CharField(widget=forms.Textarea(attrs={"rows": "3"}), required=False)
+    hobbies = forms.ModelMultipleChoiceField(
+        queryset=Hobby.objects.all(), widget=forms.SelectMultiple(), required=False
+    )
+
     class Meta:
         model = User
-        fields = ['profile_photo', 'bio', 'hobbies']
-        widgets = {
-            'profile_photo': forms.FileInput(attrs={'class': 'form-control'}),
-            'bio': forms.Textarea(attrs={'class': 'form-control', 'style': 'height: 80px;'}),
-            'hobbies': forms.CheckboxSelectMultiple(),
-        }
+        fields = ("profile_photo", "bio", "hobbies")

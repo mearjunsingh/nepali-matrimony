@@ -8,8 +8,11 @@
 <!-- Main Content Starts -->
 <div class="m-3">
 
-    <div class="text-danger d-flex justify-content-center">
+    <div class="d-flex justify-content-center">
         <img src="{{ request.user.profile_photo.url }}" class="border rounded shadow" style="height: 100px !important;">
+    </div>
+    <div class="text-danger d-flex justify-content-center">
+        <strong>{{ request.user.full_name }}</strong>
     </div>
 
     <!-- Form Starts -->
@@ -27,8 +30,7 @@
     <hr />
 
     <div class="d-flex justify-content-center">
-        <button class="btn btn-sm btn-warning mx-2" id="deleteAccountBtn">Delete Account</button> <a href="#"
-            class="mx-2 btn btn-sm btn-warning">Logout</a>
+        <a href="{% url 'logout_user_profile' %}" class="mx-2 btn btn-sm btn-warning">Logout</a>
     </div>
 
 </div>
