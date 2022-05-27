@@ -76,9 +76,7 @@ class User(PermissionsMixin, AbstractBaseUser):
     profile_photo = models.ImageField(_("profile photo"), upload_to=UPLOAD_IMAGE_PATH)
     bio = models.TextField(_("bio"), blank=True, null=True)
     hobbies = models.ManyToManyField(Hobby, verbose_name=_("hobbies"))
-    longitude = models.CharField(_("Longitude"), max_length=20)
-    lattitude = models.CharField(_("Lattitude"), max_length=20)
-    meta_data = models.TextField(_("Meta Data"), blank=True, null=True)
+    score = models.IntegerField(_("score"), default=0)
 
     # user meta
     is_active = models.BooleanField(_("Active"), default=True)
@@ -114,6 +112,10 @@ class User(PermissionsMixin, AbstractBaseUser):
         super().save(*args, **kwargs)
 
         img = Image.open(self.profile_photo.path)
-        output_size = (300, 300)
-        img.thumbnail(output_size)
+        width, height = img.size
+        left = (width - 300) / 2
+        top = (height - 300) / 2
+        right = (width + 300) / 2
+        bottom = (height + 300) / 2
+        img = img.crop((left, top, right, bottom))
         img.save(self.profile_photo.path)

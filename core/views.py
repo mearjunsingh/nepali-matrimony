@@ -4,8 +4,6 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
 
-from users.models import Hobby
-
 from .models import Match, Message
 
 User = get_user_model()
@@ -21,15 +19,22 @@ def generate_new_user(main_user):
     # exclude the current user
     users = users.exclude(id=main_user.id)
 
-    # matched_users = main_user.by_set.filter(is_matched=False)
+    # get list of users whom current user have already liked or disliked
+    as_liker = main_user.user1.all()
+    likee_id = [match.to.id for match in as_liker]
 
-    # already_liked = users.filter() #User.objects.Match.objects.filter(by_user=main_user)
+    # get list of users who already have a match with current user
+    as_likee = main_user.user2.filter(is_matched=True)
+    liker_id = [match.by.id for match in as_likee]
 
-    # users = [user for user in users if user not in main_user.matched_users.all()]
+    # exclude the users whom the current user have already liked or disliked
+    # and users who already have matched with the current user
+    users = users.exclude(id__in=likee_id).exclude(id__in=liker_id)
 
-    # remove users that have already been matched, liked, or disliked
-    #### todo: add logic to remove users that have already been matched, liked, or disliked
+    # order the user according to their score
+    users = users.order_by("-score")
 
+    # return the first user in the list
     new_user = users.first()
     return new_user
 
@@ -82,6 +87,10 @@ def ajax_like_user(request):
             if match_obj:
                 match_obj.is_matched = True
                 match_obj.save()
+                to_user.score += 2
+                to_user.save()
+                by_user.score += 1
+                by_user.save()
             else:
                 try:
                     Match.objects.create(by=by_user, to=to_user, mode="like")
@@ -89,13 +98,16 @@ def ajax_like_user(request):
                     pass
 
     new_user = generate_new_user(request.user)
-    data = {
-        "full_name": new_user.full_name,
-        "age": new_user.age,
-        "bio": new_user.bio,
-        "image_url": new_user.profile_photo.url,
-        "id": new_user.id,
-    }
+    if new_user:
+        data = {
+            "full_name": new_user.full_name,
+            "age": new_user.age,
+            "bio": new_user.bio,
+            "image_url": new_user.profile_photo.url,
+            "id": new_user.id,
+        }
+    else:
+        data = {"error": "No more users to like"}
     return JsonResponse(data)
 
 
@@ -112,11 +124,14 @@ def ajax_dislike_user(request):
             pass
 
     new_user = generate_new_user(request.user)
-    data = {
-        "full_name": new_user.full_name,
-        "age": new_user.age,
-        "bio": new_user.bio,
-        "image_url": new_user.profile_photo.url,
-        "id": new_user.id,
-    }
+    if new_user:
+        data = {
+            "full_name": new_user.full_name,
+            "age": new_user.age,
+            "bio": new_user.bio,
+            "image_url": new_user.profile_photo.url,
+            "id": new_user.id,
+        }
+    else:
+        data = {"error": "No more users to like"}
     return JsonResponse(data)

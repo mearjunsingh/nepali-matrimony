@@ -8,6 +8,8 @@
 <!-- Main Content Starts -->
 <div class="m-3">
 
+    {% if user %}
+
     <!-- Image Section Starts -->
     <div class="image-container">
         <img id="image_place" class="rounded border img-fluid" src="{{ user.profile_photo.url }}">
@@ -32,6 +34,12 @@
     </div>
     <!-- Action Ends -->
 
+    {% else %}
+    <div class="d-flex justify-content-center">
+        <div class="h1">No User Found</div>
+    </div>
+    {% endif %}
+
 </div>
 <!-- Main Content Ends -->
 
@@ -51,10 +59,14 @@
         new_user_image_url = response.data['image_url'];
         new_user_bio = response.data['bio'];
 
-        document.querySelector('#image_place').setAttribute('src', new_user_image_url);
-        document.querySelector('#full_name_place').innerText = new_user_name;
-        document.querySelector('#age_place').innerText = new_user_age;
-        document.querySelector('#bio_place').innerText = new_user_bio;
+        if (new_user_name == undefined || new_user_age == undefined || new_user_image_url == undefined || new_user_bio == undefined) {
+            window.location.href = '/';
+        } else {
+            document.querySelector('#full_name_place').innerHTML = new_user_name;
+            document.querySelector('#age_place').innerHTML = new_user_age;
+            document.querySelector('#image_place').src = new_user_image_url;
+            document.querySelector('#bio_place').innerHTML = new_user_bio;
+        }
     };
 
     const reqData = new FormData();
