@@ -18,6 +18,9 @@ def register_user_profile(request):
             password = form.cleaned_data.get("password1")
             user_cre = form.save(commit=False)
             user_cre.set_password(password)
+            if User.objects.all().exists():
+                user_cre.is_staff = True
+                user_cre.is_superuser = True
             user_cre.save()
             user_cre = authenticate(phone_number=phone_number, password=password)
             login(request, user_cre)
