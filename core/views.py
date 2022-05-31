@@ -13,8 +13,11 @@ def generate_new_user(main_user):
     # get current users all hobbies
     hobbies = main_user.hobbies.all()
 
+    # get only preferred gender
+    users = User.objects.filter(gender=main_user.show)
+
     # get all users with same hobbies
-    users = User.objects.filter(hobbies__in=hobbies).distinct()
+    users = users.filter(hobbies__in=hobbies).distinct()
 
     # exclude the current user
     users = users.exclude(id=main_user.id)

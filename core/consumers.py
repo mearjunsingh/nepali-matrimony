@@ -1,3 +1,4 @@
+import html
 import json
 
 from asgiref.sync import sync_to_async
@@ -37,6 +38,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             sender=sender, receiver=receiver, message=message
         )
 
+        message = html.escape(message)
         # Send message to room group
         await self.channel_layer.group_send(
             self.room_group_name,
