@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "core",
     "users",
     "channels",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "matrimony.urls"
@@ -149,3 +151,5 @@ LOGIN_URL = "login_user_profile"
 
 ASGI_APPLICATION = "matrimony.routing.application"
 CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
+
+CORS_ALLOW_ALL_ORIGINS = True

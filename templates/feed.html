@@ -69,12 +69,16 @@
         }
     };
 
+    const baseURL = window.location.origin;
+    const likeURL = baseURL + '/ajax/likeuser/';
+    const dislikeURL = baseURL + '/ajax/dislikeuser/';
+
     const reqData = new FormData();
     reqData.append('guestUser', '{{ user.id }}');
     reqData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 
     rightBtn.addEventListener('click', event => {
-        axios.post('http://127.0.0.1:8000/ajax/likeuser/', reqData)
+        axios.post(likeURL, reqData)
             .then(response => {
                 fillUser(response);
                 reqData.set('guestUser', response.data['id']);
@@ -85,7 +89,7 @@
     });
 
     leftBtn.addEventListener('click', event => {
-        axios.post('http://127.0.0.1:8000/ajax/dislikeuser/', reqData)
+        axios.post(dislikeURL, reqData)
             .then(response => {
                 fillUser(response);
                 reqData.set('guestUser', response.data['id']);
