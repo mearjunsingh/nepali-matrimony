@@ -4,7 +4,7 @@
 }
 
 .img-fluid {
-	width: 100%;
+	min-width: 100% !important;
 	height: auto;
 }
 
@@ -12,19 +12,18 @@
 	width: 100%;
 	bottom: 0;
 	position: absolute;
-	background: linear-gradient(
-		0deg,
-		rgba(0, 0, 0, 0.75),
-		rgba(0, 0, 0, 0)
-	);
+	background: linear-gradient(0deg,
+			rgba(0, 0, 0, 0.75),
+			rgba(0, 0, 0, 0));
 }
 
 /* Forms */
-.input-group > .form-select, .input-group-text {
+.input-group>.form-select,
+.input-group-text {
 	width: 30%;
 }
 
-.input-group > .form-control {
+.input-group>.form-control {
 	width: 70%;
 }
 

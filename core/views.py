@@ -8,7 +8,7 @@ from .models import Match, Message
 
 User = get_user_model()
 
-
+# Algorithm to find the best match
 def generate_new_user(main_user):
     # get current users all hobbies
     hobbies = main_user.hobbies.all()

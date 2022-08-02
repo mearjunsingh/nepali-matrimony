@@ -18,7 +18,7 @@ def register_user_profile(request):
             password = form.cleaned_data.get("password1")
             user_cre = form.save(commit=False)
             user_cre.set_password(password)
-            if User.objects.all().exists():
+            if not User.objects.all().exists():
                 user_cre.is_staff = True
                 user_cre.is_superuser = True
             user_cre.save()
