@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% include 'includes/navbar.html' %}
+
+<!-- Main Content Starts -->
+<div class="m-3">
+
+    <div class="d-flex justify-content-center">
+        <img src="{{ request.user.profile_photo.url }}" class="border rounded shadow" style="height: 100px !important;">
+    </div>
+    <div class="text-danger d-flex justify-content-center">
+        <strong>{{ request.user.full_name }}</strong>
+    </div>
+
+    <!-- Form Starts -->
+    <form action="." method="POST" enctype="multipart/form-data">
+
+        {% include 'includes/forms.html' %}
+
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-danger" type="submit">Update Details</button>
+        </div>
+
+    </form>
+    <!-- Form Ends -->
+
+    <hr />
+
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'logout_user_profile' %}" class="mx-2 btn btn-sm btn-warning">Logout</a>
+    </div>
+
+</div>
+<!-- Main Content Ends -->
+
+{% endblock %}

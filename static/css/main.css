@@ -1,0 +1,40 @@
+/* Images */
+.image-container {
+	position: relative;
+}
+
+.img-fluid {
+	min-width: 100% !important;
+	height: auto;
+}
+
+.image-content {
+	width: 100%;
+	bottom: 0;
+	position: absolute;
+	background: linear-gradient(0deg,
+			rgba(0, 0, 0, 0.75),
+			rgba(0, 0, 0, 0));
+}
+
+/* Forms */
+.input-group>.form-select,
+.input-group-text {
+	width: 30%;
+}
+
+.input-group>.form-control {
+	width: 70%;
+}
+
+
+/* Feathericons */
+.icon-45 {
+	height: 45px;
+	width: 45px;
+}
+
+.icon-80 {
+	height: 80px;
+	width: 80px;
+}

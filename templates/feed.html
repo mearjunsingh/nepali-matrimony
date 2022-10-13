@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% include 'includes/navbar.html' %}
+
+<!-- Main Content Starts -->
+<div class="m-3">
+
+    {% if user %}
+
+    <!-- Image Section Starts -->
+    <div class="image-container">
+        <img id="image_place" class="rounded border img-fluid" src="{{ user.profile_photo.url }}">
+        <div class="image-content text-light">
+            <div class="m-2">
+                <span id="full_name_place" class="h2">{{ user.full_name }}</span>
+                <span id="age_place" class="lead">{{ user.age }}</span>
+            </div>
+            <div id="bio_place" class="bio m-2">
+                {{ user.bio }}
+            </div>
+        </div>
+    </div>
+    <!-- Image Section Ends -->
+
+    <!-- Action Starts -->
+    <div class="d-flex justify-content-center mt-3">
+        <button id="leftBtn" class="mx-4 p-3 btn btn-outline-danger rounded-circle"><i class="icon-45"
+                data-feather="x"></i></button>
+        <button id="rightBtn" class="mx-4 p-3 btn btn-outline-success rounded-circle"><i class="icon-45"
+                data-feather="heart"></i></button>
+    </div>
+    <!-- Action Ends -->
+
+    {% else %}
+    <div class="d-flex justify-content-center">
+        <div class="h1">No User Found</div>
+    </div>
+    {% endif %}
+
+</div>
+<!-- Main Content Ends -->
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script src="{% static 'js/axios.min.js' %}"></script>
+<script>
+    const rightBtn = document.querySelector('#rightBtn');
+    const leftBtn = document.querySelector('#leftBtn');
+
+    const fillUser = response => {
+        new_user_name = response.data['full_name'];
+        new_user_age = response.data['age'];
+        new_user_image_url = response.data['image_url'];
+        new_user_bio = response.data['bio'];
+
+        if (new_user_name == undefined || new_user_age == undefined || new_user_image_url == undefined || new_user_bio == undefined) {
+            window.location.href = '/';
+        } else {
+            document.querySelector('#full_name_place').innerHTML = new_user_name;
+            document.querySelector('#age_place').innerHTML = new_user_age;
+            document.querySelector('#image_place').src = new_user_image_url;
+            document.querySelector('#bio_place').innerHTML = new_user_bio;
+        }
+    };
+
+    const baseURL = window.location.origin;
+    const likeURL = baseURL + '/ajax/likeuser/';
+    const dislikeURL = baseURL + '/ajax/dislikeuser/';
+
+    const reqData = new FormData();
+    reqData.append('guestUser', '{{ user.id }}');
+    reqData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+    rightBtn.addEventListener('click', event => {
+        axios.post(likeURL, reqData)
+            .then(response => {
+                fillUser(response);
+                reqData.set('guestUser', response.data['id']);
+            })
+            .catch(error => {
+                alert('Something Happened!');
+            });
+    });
+
+    leftBtn.addEventListener('click', event => {
+        axios.post(dislikeURL, reqData)
+            .then(response => {
+                fillUser(response);
+                reqData.set('guestUser', response.data['id']);
+            })
+            .catch(error => {
+                alert('Something Happened!');
+            });
+    });
+</script>
+
+{% endblock %}

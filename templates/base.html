@@ -1,0 +1,46 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nepali Matrimony</title>
+
+    <!-- Boostrap CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+</head>
+
+<body>
+
+    <!-- Container Starts -->
+    <div class="row m-3">
+        <div class="col-sm-12 col-md-6 col-lg-4 border rounded-3 shadow mx-auto">
+
+            {% block content %}
+            {% endblock %}
+
+        </div>
+    </div>
+    <!-- Container Ends -->
+
+    <!-- Boostrap Bundle JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Feathericons JS -->
+    <script src="{% static 'js/feather.min.js' %}"></script>
+
+    <!-- Custom JS -->
+    <script src="{% static 'js/app.js' %}"></script>
+
+    {% block scripts %}
+    {% endblock %}
+
+</body>
+
+</html>

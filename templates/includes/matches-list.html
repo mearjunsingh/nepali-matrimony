@@ -1,0 +1,5 @@
+<div class="ms-2 me-auto">
+    <a href="{% url 'chat_page_view' u.id %}" class="fw-bold">{{ u.full_name }}</a>
+</div>
+
+<img class="rounded-circle" src="{{ u.profile_photo.url }}" style="max-height: 30px; width: auto;" />

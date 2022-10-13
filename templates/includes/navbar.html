@@ -1,0 +1,16 @@
+<!-- Navbar Starts -->
+<nav class="d-flex justify-content-center mt-3">
+        <a href="{% url 'feed_page_view' %}" class="mx-4 p-2 btn btn-outline-danger rounded-circle"><i
+                        data-feather="heart"></i></a>
+        <a href="{% url 'matches_page_view' %}"
+                class="mx-4 p-2 btn btn-outline-danger rounded-circle position-relative">
+                <i data-feather="send"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ like_count }}
+                        <span class="visually-hidden">people liked</span>
+                </span>
+        </a>
+        <a href="{% url 'update_user_profile' %}" class="mx-4 p-2 btn btn-outline-danger rounded-circle"><i
+                        data-feather="user"></i></a>
+</nav>
+<!-- Navbar Ends -->

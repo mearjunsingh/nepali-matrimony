@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% include 'includes/navbar.html' %}
+
+<!-- Main Content Starts -->
+<div class="m-3">
+
+    <nav class="mt-3 border-bottom">
+        <a href="{% url 'matches_page_view' %}" class="text-danger fw-bold mx-2" style="text-decoration: none;"><i
+                data-feather="arrow-left"></i>
+            Back</a> |
+        <span class="fw-bold mx-2">{{ user.full_name }}</span>
+    </nav>
+
+    <div style="height: 450px; overflow-y: scroll;" id="chat_box">
+
+        {% for chat in chats %}
+
+        {% if chat.sender != request.user %}
+
+        <div class="rounded-pill alert-sm alert-primary d-flex m-2 p-2">
+            <div>
+                <img class="rounded-circle" src="{{ chat.sender.profile_photo.url }}"
+                    style="max-height: 30px; width: auto;" />
+            </div>
+            <div class="mx-2">
+                <div class="text-muted">{{ chat.message }}</div>
+            </div>
+        </div>
+
+        {% else %}
+
+        <div class="rounded-pill alert-sm alert-secondary d-flex justify-content-end m-2 p-2">
+            <div class="mx-2">
+                <div class="text-muted">{{ chat.message }}</div>
+            </div>
+            <div>
+                <img class="rounded-circle" src="{{ chat.sender.profile_photo.url }}"
+                    style="max-height: 30px; width: auto;" />
+            </div>
+        </div>
+
+        {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+    <div class="m-2 p-2">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="message_input" onkeypress="sendByEnter(event)"
+                placeholder="Type your message" autofocus>
+            <button type="button" class="btn btn-danger" id="send_btn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+</div>
+<!-- Main Content Ends -->
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function scrollToBottom() {
+        var objDiv = document.getElementById("chat_box");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
+
+    scrollToBottom();
+
+    const socket = new WebSocket("ws://" + window.location.host + "/ws/chat/{{ match_id }}/");
+
+    socket.onopen = function (e) {
+        console.log("Connection established!");
+    };
+
+    socket.onmessage = function (e) {
+        var data = JSON.parse(e.data);
+        var chat_box = document.getElementById("chat_box");
+        var chat_message = document.createElement("div");
+
+        if (data.sender_id != '{{ request.user.id }}') {
+            chat_message.className = "rounded-pill alert-sm alert-primary d-flex m-2 p-2";
+            chat_message.innerHTML = `
+            <div>
+                <img class="rounded-circle" src="${data.sender_image}"
+                    style="max-height: 30px; width: auto;" />
+            </div>
+            <div class="mx-2">
+                <div class="text-muted">${data.message}</div>
+            </div>
+            `;
+        } else {
+            chat_message.className = "rounded-pill alert-sm alert-secondary d-flex justify-content-end m-2 p-2";
+            chat_message.innerHTML = `
+            <div class="mx-2">
+                <div class="text-muted">${data.message}</div>
+            </div>
+            <div>
+                <img class="rounded-circle" src="${data.sender_image}"
+                    style="max-height: 30px; width: auto;" />
+            </div>
+            `;
+        }
+
+        chat_box.append(chat_message);
+        scrollToBottom();
+    };
+
+    sendMessage = function () {
+        var message = document.getElementById("message_input").value;
+        var sender = '{{ request.user.id }}';
+        var receiver = '{{ user.id }}';
+        var data = {
+            "message": message,
+            "sender": sender,
+            "receiver": receiver
+        };
+
+        if (message.length > 0) {
+            socket.send(JSON.stringify(data));
+        }
+
+        document.getElementById("message_input").value = "";
+    }
+
+    sendByEnter = function (e) {
+        if (e.code == 'Enter') {
+            sendMessage();
+        }
+    }
+</script>
+{% endblock %}

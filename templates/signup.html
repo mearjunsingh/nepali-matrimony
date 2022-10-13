@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Main Content Starts -->
+<div class="m-3">
+
+    <div class="text-danger m-5 d-flex justify-content-center">
+        <i class="icon-80" data-feather="users"></i>
+    </div>
+
+    <!-- Form Starts -->
+    <form action="{% url 'register_user_profile' %}" method="POST" enctype="multipart/form-data">
+
+        {% include 'includes/forms.html' %}
+
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-danger" type="submit">Register</button>
+        </div>
+
+    </form>
+    <!-- Form Ends -->
+
+    <hr />
+
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'login_user_profile' %}" class="mx-2 btn btn-sm btn-warning">Already have an
+            account? Login</a>
+    </div>
+
+</div>
+<!-- Main Content Ends -->
+
+{% endblock %}
